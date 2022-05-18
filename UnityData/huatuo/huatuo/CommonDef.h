@@ -166,6 +166,7 @@ namespace huatuo
 	}
 
     extern Il2CppType* SHARED_VALUETYPES[MAX_SHARED_VALUETYPES];
+    extern int32_t MODE;
 }
 
 

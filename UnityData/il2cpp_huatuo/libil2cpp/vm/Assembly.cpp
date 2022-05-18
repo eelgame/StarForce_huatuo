@@ -124,14 +124,15 @@ namespace vm
 
     void Assembly::Register(const Il2CppAssembly* assembly)
     {
-        if (strcmp(assembly->image->name, "Assembly-CSharp.dll") == 0)
-        {
-            if (!huatuo::metadata::IsInterpreterIndex(assembly->image->token))
+        if (huatuo::MODE != 0)
+            if (strcmp(assembly->image->name, "Assembly-CSharp.dll") == 0)
             {
-                std::cout << "ignore aot: " << assembly->image->name << std::endl;
-                return;
+                if (!huatuo::metadata::IsInterpreterIndex(assembly->image->token))
+                {
+                    std::cout << "ignore aot: " << assembly->image->name << std::endl;
+                    return;
+                }
             }
-        }
 // ==={{ huatuo
         os::FastAutoLock lock(&s_assemblyLock);
 

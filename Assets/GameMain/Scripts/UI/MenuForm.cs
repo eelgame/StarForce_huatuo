@@ -6,6 +6,7 @@
 //------------------------------------------------------------
 
 using UnityEngine;
+using UnityEngine.UI;
 using UnityGameFramework.Runtime;
 
 namespace StarForce
@@ -14,8 +15,22 @@ namespace StarForce
     {
         [SerializeField]
         private GameObject m_QuitButton = null;
+        
+        [SerializeField]
+        private Text m_Description = null;
 
         private ProcedureMenu m_ProcedureMenu = null;
+        protected override void OnInit(object userData)
+        {
+            base.OnInit(userData);
+            if (m_Description)
+            {
+                if (typeof(MenuForm).Module.MetadataToken >= 1 << 26)
+                {
+                    m_Description.text = "huatuo";
+                }
+            }
+        }
 
         public void OnStartButtonClick()
         {

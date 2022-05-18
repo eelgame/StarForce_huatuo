@@ -104,7 +104,8 @@ void managed_init()
     auto method = Class::GetMethodFromName(huatuoHelperClazz, "Init", 0);
     Il2CppException* exception = nullptr;
 
-    Runtime::Invoke(method, nullptr, nullptr, &exception);
+    huatuo::MODE = *(int32_t*)(Object::Unbox(Runtime::Invoke(method, nullptr, nullptr, &exception)));
+    // Runtime::Invoke(method, nullptr, nullptr, &exception);
 
     if (exception != nullptr) {
         std::cout << il2cpp::utils::Exception::FormatException(exception) << std::endl;
