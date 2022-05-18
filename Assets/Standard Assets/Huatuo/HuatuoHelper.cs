@@ -17,14 +17,7 @@ namespace Huatuo
 
     public static class HuatuoHelper
     {
-        [DllImport("GameAssembly.dll", CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "il2cpp_huatuo_register_valuetype_shared_inst")]
-        private static extern int il2cpp_huatuo_register_valuetype_shared_inst_win(IntPtr obj);
 
-
-        [DllImport("libil2cpp.so", CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "il2cpp_huatuo_register_valuetype_shared_inst")]
-        private static extern int il2cpp_huatuo_register_valuetype_shared_inst_android(IntPtr obj);
 
         private static List<Type> RefTypes()
         {
@@ -52,7 +45,16 @@ namespace Huatuo
 
             return 1; // 热更模式运行
         }
+        
+        [DllImport("GameAssembly.dll", CallingConvention = CallingConvention.Cdecl,
+            EntryPoint = "il2cpp_huatuo_register_valuetype_shared_inst")]
+        private static extern int il2cpp_huatuo_register_valuetype_shared_inst_win(IntPtr obj);
 
+
+        [DllImport("libil2cpp.so", CallingConvention = CallingConvention.Cdecl,
+            EntryPoint = "il2cpp_huatuo_register_valuetype_shared_inst")]
+        private static extern int il2cpp_huatuo_register_valuetype_shared_inst_android(IntPtr obj);
+        
         private static void RegisterValuetypeSharedInst(Type t)
         {
             var size = 0;
