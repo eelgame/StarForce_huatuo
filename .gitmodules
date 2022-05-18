@@ -1,3 +1,9 @@
 [submodule "Assets/GameFramework"]
 	path = Assets/GameFramework
 	url = https://github.com/EllanJiang/UnityGameFramework.git
+[submodule "UnityData/huatuo"]
+	path = UnityData/huatuo
+	url = https://github.com/eelgame/huatuo.git
+[submodule "UnityData/il2cpp_huatuo"]
+	path = UnityData/il2cpp_huatuo
+	url = https://github.com/eelgame/il2cpp_huatuo.git
