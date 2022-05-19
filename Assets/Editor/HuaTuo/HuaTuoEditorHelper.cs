@@ -99,51 +99,15 @@ namespace HuaTuo
             code.AppendLine("using System.Runtime.InteropServices;");
             code.Append("namespace Huatuo");
             code.Append("{");
-            var method = @"public override bool Equals(object obj)
-        {
-            if (__functions__._huatuo_Equals_ftn_ != IntPtr.Zero)
-            {
-                var dgt = Marshal.GetDelegateForFunctionPointer<Equals>(__functions__._huatuo_Equals_ftn_);
-                return dgt(obj);
-            }
-
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            if (__functions__._huatuo_GetHashCode_ftn_ != IntPtr.Zero)
-            {
-                var dgt = Marshal.GetDelegateForFunctionPointer<GetHashCode>(__functions__._huatuo_GetHashCode_ftn_);
-                return dgt();
-            }
-
-            return base.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            if (__functions__._huatuo_ToString_ftn_ != IntPtr.Zero)
-            {
-                var dgt = Marshal.GetDelegateForFunctionPointer<ToString>(__functions__._huatuo_ToString_ftn_);
-                return dgt();
-            }
-
-            return base.ToString();
-        }
-";
-            // {string.Join("\n", Enumerable.Range(0, (left = i) / 8).Select(x => $"\t\tprivate long l{x};"))}
-            // {string.Join("\n", Enumerable.Range(0, (left = left % 8) / 4).Select(x => $"\t\tprivate int i{x};"))}
-            // {string.Join("\n", Enumerable.Range(0, (left = left % 4)).Select(x => $"\t\tprivate byte b{x};"))}
             for (var i = 0; i < 512; i++)
             {
                 var left = i;
                 code.Append($@"
     public struct _shared_size_{i}
     {{
-        private Huatuo.ValueTypeFunctions __functions__;
-        {string.Join("\n", Enumerable.Range(0, left).Select(x => $"\t\tprivate byte b{x};"))}
-        {method}
+        {string.Join("\n", Enumerable.Range(0, (left = i) / 8).Select(x => $"\t\tprivate long l{x};"))}
+        {string.Join("\n", Enumerable.Range(0, (left = left % 8) / 4).Select(x => $"\t\tprivate int i{x};"))}
+        {string.Join("\n", Enumerable.Range(0, (left = left % 4)).Select(x => $"\t\tprivate byte b{x};"))}
     }}");
 
             }
