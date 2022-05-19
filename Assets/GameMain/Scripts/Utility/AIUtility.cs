@@ -188,7 +188,7 @@ namespace StarForce
         }
         
         [StructLayout(LayoutKind.Auto)]
-        public struct CampPair : IInterpreterValueType
+        public struct CampPair
         {           
             private readonly CampType m_First;
             private readonly CampType m_Second;
