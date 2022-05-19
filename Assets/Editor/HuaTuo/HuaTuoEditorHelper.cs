@@ -95,30 +95,64 @@ namespace HuaTuo
         public static void GenSharedValueTypes()
         {
             var code = new StringBuilder();
+            code.AppendLine("using System;");
+            code.AppendLine("using System.Runtime.InteropServices;");
             code.Append("namespace Huatuo");
             code.Append("{");
-            code.Append(@"
-    public struct _shared_size_0
-    {
-    }
-    public struct _shared_size_1
-    {
-        private byte f1;
-    }");
+            var method = @"public override bool Equals(object obj)
+        {
+            if (__functions__._huatuo_Equals_ftn_ != IntPtr.Zero)
+            {
+                var dgt = Marshal.GetDelegateForFunctionPointer<Equals>(__functions__._huatuo_Equals_ftn_);
+                return dgt(obj);
+            }
 
-            for (var i = 2; i <= 512; i++)
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            if (__functions__._huatuo_GetHashCode_ftn_ != IntPtr.Zero)
+            {
+                var dgt = Marshal.GetDelegateForFunctionPointer<GetHashCode>(__functions__._huatuo_GetHashCode_ftn_);
+                return dgt();
+            }
+
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            if (__functions__._huatuo_ToString_ftn_ != IntPtr.Zero)
+            {
+                var dgt = Marshal.GetDelegateForFunctionPointer<ToString>(__functions__._huatuo_ToString_ftn_);
+                return dgt();
+            }
+
+            return base.ToString();
+        }
+";
+            // {string.Join("\n", Enumerable.Range(0, (left = i) / 8).Select(x => $"\t\tprivate long l{x};"))}
+            // {string.Join("\n", Enumerable.Range(0, (left = left % 8) / 4).Select(x => $"\t\tprivate int i{x};"))}
+            // {string.Join("\n", Enumerable.Range(0, (left = left % 4)).Select(x => $"\t\tprivate byte b{x};"))}
+            for (var i = 0; i < 512; i++)
+            {
+                var left = i;
                 code.Append($@"
     public struct _shared_size_{i}
     {{
-        private _shared_size_{i - 1} f1;
-        private byte f2;
+        private Huatuo.ValueTypeFunctions __functions__;
+        {string.Join("\n", Enumerable.Range(0, left).Select(x => $"\t\tprivate byte b{x};"))}
+        {method}
     }}");
+
+            }
 
             code.Append($@"
     public static class shared_value_types {{
         public static System.Collections.Generic.List<System.Type> types = new System.Collections.Generic.List<System.Type>
         {{
-            {string.Join(",", Enumerable.Range(0, 513).Select(i => $"typeof(_shared_size_{i})"))}
+            {string.Join(",", Enumerable.Range(0, 512).Select(i => $"typeof(_shared_size_{i})"))}
         }};
     }}");
 

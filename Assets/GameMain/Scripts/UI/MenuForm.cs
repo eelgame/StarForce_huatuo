@@ -5,6 +5,7 @@
 // Feedback: mailto:ellan@gameframework.cn
 //------------------------------------------------------------
 
+using Huatuo;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityGameFramework.Runtime;
@@ -25,8 +26,7 @@ namespace StarForce
             base.OnInit(userData);
             if (m_Description)
             {
-                if (typeof(MenuForm).Module.MetadataToken >= 1 << 26)
-                {
+                if (typeof(MenuForm).IsInterpreterType())      {
                     m_Description.text = "huatuo";
                 }
             }

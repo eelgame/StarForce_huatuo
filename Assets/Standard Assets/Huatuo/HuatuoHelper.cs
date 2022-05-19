@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Huatuo
 {
+    public interface IInterpreterValueType
+    {
+        
+    }
+
     public enum ByteEnum : byte
     {
     }
@@ -18,12 +21,16 @@ namespace Huatuo
     public static class HuatuoHelper
     {
 
+        public static bool IsInterpreterType(this Type t)
+        {
+            return t.Module.MetadataToken >= 1 << 26;
+        }
 
         private static List<Type> RefTypes()
         {
             var types = new List<Type>
             {
-                typeof(Dictionary<_shared_size_2, ByteEnum>)
+                typeof(Dictionary<_shared_size_2, ByteEnum>),
             };
 
             return types;
@@ -33,7 +40,7 @@ namespace Huatuo
         {
             // return 0; // aot模式运行
             Debug.Log("Huatuo.HuatuoHelper.Init Start");
-            
+
             BetterStreamingAssets.Initialize();
 
             var bytes = BetterStreamingAssets.ReadAllBytes("Assembly-CSharp.dll");
@@ -45,25 +52,10 @@ namespace Huatuo
 
             return 1; // 热更模式运行
         }
-        
-        [DllImport("GameAssembly.dll", CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "il2cpp_huatuo_register_valuetype_shared_inst")]
-        private static extern int il2cpp_huatuo_register_valuetype_shared_inst_win(IntPtr obj);
 
-
-        [DllImport("libil2cpp.so", CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "il2cpp_huatuo_register_valuetype_shared_inst")]
-        private static extern int il2cpp_huatuo_register_valuetype_shared_inst_android(IntPtr obj);
-        
         private static void RegisterValuetypeSharedInst(Type t)
         {
-            var size = 0;
-            if (Application.platform == RuntimePlatform.Android)
-                size = il2cpp_huatuo_register_valuetype_shared_inst_android(t.TypeHandle.Value);
-            else if (Application.platform == RuntimePlatform.WindowsPlayer)
-                size = il2cpp_huatuo_register_valuetype_shared_inst_win(t.TypeHandle.Value);
-            else
-                throw new NotSupportedException();
+            var size = IL2CPP.il2cpp_huatuo_register_valuetype_shared_inst(t.TypeHandle.Value);
             Debug.Log(t + ": " + size);
         }
     }

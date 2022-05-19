@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Huatuo;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -185,10 +186,18 @@ namespace StarForce
 
             return attack * attack / (attack + defense);
         }
-
+        
         [StructLayout(LayoutKind.Auto)]
-        private struct CampPair
-        {
+        public struct CampPair : IInterpreterValueType
+        {           
+            private static ValueTypeFunctions __s_huatuo_value_type_functions__;
+
+            static CampPair (){
+                ValueTypeFunctions.Setup(typeof(CampPair));
+            }
+
+            private ValueTypeFunctions __huatuo_value_type_functions__;
+
             private readonly CampType m_First;
             private readonly CampType m_Second;
 
@@ -196,6 +205,7 @@ namespace StarForce
             {
                 m_First = first;
                 m_Second = second;
+                __huatuo_value_type_functions__ = __s_huatuo_value_type_functions__;
             }
 
             public CampType First
