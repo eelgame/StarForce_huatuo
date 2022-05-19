@@ -5,11 +5,6 @@ using UnityEngine;
 
 namespace Huatuo
 {
-    public interface IInterpreterValueType
-    {
-        
-    }
-
     public enum ByteEnum : byte
     {
     }
